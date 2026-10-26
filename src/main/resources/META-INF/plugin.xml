@@ -1,0 +1,111 @@
+<idea-plugin>
+  <id>com.github.pathreference</id>
+  <name>Path Reference (Path:Line)</name>
+  <version>1.4.1</version>
+  <vendor url="https://github.com/pathreference">pathreference</vendor>
+
+  <description><![CDATA[
+    <h3>English</h3>
+    <p>Copy a code reference in the form <code>@path/to/File.php:42</code> or
+    <code>@path/to/File.php:42-57</code>, using a path relative to the project root.</p>
+
+    <p>Select a block of code and invoke <b>Copy Path with Line Numbers</b>
+    (default shortcut: <b>Alt+C</b>, or right-click in the editor).
+    With no selection, the caret line is used.</p>
+
+    <p>Unlike the built-in <i>Copy Reference</i>, this action always produces a
+    path + line reference, regardless of what is under the caret, and supports
+    multi-line selections and multiple carets.</p>
+
+    <p>Settings are available under <b>Settings | Tools | Path Reference</b>
+    (also reachable from <b>Tools | Path Reference Settings…</b>): path style
+    (project root, content root, absolute), a configurable prefix such as
+    <code>@</code> or <code>#</code>, the separator between the path and the
+    line number, the line-range separator, Markdown backticks, and an optional
+    fenced code block.</p>
+
+    <p>The user interface is bilingual: English on an English IDE, Chinese on a
+    Chinese IDE (the strings follow the IDE language pack).</p>
+
+    <p>License: Apache-2.0</p>
+
+    <h3>中文</h3>
+    <p>把选中的代码复制成「<b>开头符号 + 项目相对路径 + 行号</b>」的引用，例如
+    <code>@app/Services/UserService.php:42</code> 或
+    <code>@app/Services/UserService.php:42-57</code>。</p>
+
+    <p>选中若干行后按 <b>Alt+C</b>（或右键菜单 <b>复制路径和行号</b>）即可复制；
+    没有选中内容时使用光标所在行。支持多光标、多选区和 Project 视图里的文件。</p>
+
+    <p>和 IDE 自带的 <i>Copy Reference</i> 不同，不管光标停在类名还是方法名上，
+    这里永远输出「路径 + 行号」，并且多行选区会给出起止行范围。</p>
+
+    <p>设置位置：<b>Settings | Tools | 路径引用</b>（也可从菜单
+    <b>Tools | 路径引用设置…</b> 打开），可配置：路径风格（项目根目录 / 内容根目录 /
+    绝对路径）、开头符号（默认 <code>@</code>，可改成 <code>#</code> 或留空）、
+    <b>路径与行号之间的分隔符</b>（默认 <code>:</code>，可改成 <code>#</code> 等）、
+    行号范围分隔符（默认 <code>-</code>）、Markdown 反引号，以及可选的代码块。</p>
+
+    <p>界面文案跟随 IDE 语言：中文 IDE 显示中文，英文 IDE 显示英文。</p>
+
+    <p>License: Apache-2.0</p>
+  ]]></description>
+
+  <change-notes><![CDATA[
+    <ul>
+      <li>1.4.1: Paths are now relative even when the project root and the file
+      belong to different file systems or reach the project through a
+      symlink/alias (Remote Development, WSL); files outside the project
+      directory fall back to the content root instead of an absolute path.</li>
+      <li>1.4.0: Configurable separator between the path and the line number
+      (default <code>:</code>, e.g. <code>#</code>); bilingual plugin description.</li>
+      <li>1.3.1: Fixed the settings page name showing a raw localization key and
+      placed the page in the Tools group.</li>
+      <li>1.3.0: The UI is now localized and follows the IDE language
+      (English / 中文).</li>
+      <li>1.2.0: Settings entry in the Tools menu.</li>
+      <li>1.1.0: Configurable prefix (default <code>@</code>),
+      default shortcut changed to <code>Alt+C</code>.</li>
+      <li>1.0.0: Initial version. Project-relative path with caret line or selection range.</li>
+    </ul>
+  ]]></change-notes>
+
+  <idea-version since-build="241"/>
+
+  <depends>com.intellij.modules.platform</depends>
+
+  <extensions defaultExtensionNs="com.intellij">
+    <!--
+      displayName is resolved from the bundle via bundle/key (the "%key" form is
+      not resolved for this extension point). groupId="tools" puts the page into
+      Settings | Tools; parentId is for nesting under another configurable.
+    -->
+    <applicationConfigurable
+        id="com.github.pathreference.settings"
+        groupId="tools"
+        bundle="messages.PathReferenceBundle"
+        key="settings.displayName"
+        instance="com.github.pathreference.PathReferenceConfigurable"/>
+  </extensions>
+
+  <actions>
+    <!--
+      text/description are intentionally not set here: the actions' constructors
+      read them from PathReferenceBundle, which is what actually follows the IDE
+      language. Do not reintroduce hard-coded text.
+    -->
+    <action id="PathReference.Copy"
+            class="com.github.pathreference.CopyPathReferenceAction"
+            icon="AllIcons.Actions.Copy">
+      <add-to-group group-id="EditorPopupMenu" anchor="first"/>
+      <add-to-group group-id="ProjectViewPopupMenu" anchor="first"/>
+      <keyboard-shortcut keymap="$default" first-keystroke="alt C"/>
+    </action>
+
+    <action id="PathReference.OpenSettings"
+            class="com.github.pathreference.OpenSettingsAction"
+            icon="AllIcons.General.Settings">
+      <add-to-group group-id="ToolsMenu" anchor="last"/>
+    </action>
+  </actions>
+</idea-plugin>

@@ -1,0 +1,8 @@
+build/
+.idea/
+*.iml
+.DS_Store
+verification-*/
+.marketplace-token
+*.pem
+chain.crt
