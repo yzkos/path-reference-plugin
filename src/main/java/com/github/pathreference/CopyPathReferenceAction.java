@@ -32,9 +32,11 @@ import java.util.List;
 public class CopyPathReferenceAction extends DumbAwareAction {
 
     public CopyPathReferenceAction() {
-        super(PathReferenceBundle.message("action.copy.text"),
-                PathReferenceBundle.message("action.copy.description"),
-                AllIcons.Actions.Copy);
+        // Set the presentation instead of using the deprecated
+        // AnAction(text, description, icon) constructor.
+        getTemplatePresentation().setText(PathReferenceBundle.message("action.copy.text"));
+        getTemplatePresentation().setDescription(PathReferenceBundle.message("action.copy.description"));
+        getTemplatePresentation().setIcon(AllIcons.Actions.Copy);
     }
 
     @Override
@@ -57,7 +59,10 @@ public class CopyPathReferenceAction extends DumbAwareAction {
         VirtualFile file = e.getData(CommonDataKeys.VIRTUAL_FILE);
         VirtualFile[] files = e.getData(CommonDataKeys.VIRTUAL_FILE_ARRAY);
 
-        String text = ReadAction.compute(() -> buildText(project, file, files, editor));
+        // ReadAction.compute(...) is deprecated; run the read synchronously with
+        // the non-blocking API instead.
+        String text = ReadAction.nonBlocking(() -> buildText(project, file, files, editor))
+                .executeSynchronously();
         if (text == null || text.isEmpty()) {
             return;
         }

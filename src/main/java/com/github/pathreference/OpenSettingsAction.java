@@ -15,9 +15,11 @@ import org.jetbrains.annotations.NotNull;
 public class OpenSettingsAction extends AnAction {
 
     public OpenSettingsAction() {
-        super(PathReferenceBundle.message("action.settings.text"),
-                PathReferenceBundle.message("action.settings.description"),
-                AllIcons.General.Settings);
+        // Set the presentation instead of using the deprecated
+        // AnAction(text, description, icon) constructor.
+        getTemplatePresentation().setText(PathReferenceBundle.message("action.settings.text"));
+        getTemplatePresentation().setDescription(PathReferenceBundle.message("action.settings.description"));
+        getTemplatePresentation().setIcon(AllIcons.General.Settings);
     }
 
     @Override
