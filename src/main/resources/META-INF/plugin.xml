@@ -1,5 +1,5 @@
 <idea-plugin>
-  <id>com.github.yzkos.pathreference</id>
+  <id>pathreference</id>
   <name>Path Reference (Path:Line)</name>
   <version>1.4.1</version>
   <vendor url="https://github.com/yzkos/path-reference-plugin">yzkos</vendor>
