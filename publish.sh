@@ -87,7 +87,8 @@ response="$(curl "${args[@]}" -w '\nHTTP %{http_code}\n' https://plugins.jetbrai
 echo "$response"
 
 if grep -q 'HTTP 2' <<< "$response"; then
-    link="$(printf '%s' "$response" | sed -n 's/.*"link":"\([^"]*\)".*/\1/p' | head -1)"
+    # take the FIRST "link" in the JSON (the version link, not the author link)
+    link="$(printf '%s' "$response" | grep -o '"link":"[^"]*"' | head -1 | sed 's/^"link":"//; s/"$//')"
     echo
     echo "Uploaded $VERSION."
     if [[ -n "$link" ]]; then
