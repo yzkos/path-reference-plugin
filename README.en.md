@@ -104,79 +104,38 @@ in both English and Chinese IDEs.
 ## Build
 
 No Gradle: it compiles with the JBR and platform jars shipped with a local
-PhpStorm, so there is no need to download the whole IntelliJ Platform SDK.
+PhpStorm.
 
 ```bash
 ./build.sh
 ```
 
-If PhpStorm cannot be auto-detected:
-
-```bash
-PHPSTORM_HOME=/path/to/PhpStorm ./build.sh
-```
-
-Artifacts:
+Artifacts (`<version>` is read from `plugin.xml`):
 
 ```
-build/path-reference-1.4.3.jar                  # plugin jar
-build/path-reference-plugin-1.4.3.zip           # installable zip
-build/plugin/path-reference/lib/*.jar           # drop-in for the plugins directory
+build/path-reference-<version>.jar          # plugin jar
+build/path-reference-plugin-<version>.zip   # installable zip
 ```
 
 The build script also runs `ReferenceFormatterTest`, which covers formatting,
-line ranges and selection boundaries. The version number lives only in
-`plugin.xml`; both `build.sh` and `publish.sh` read it from there.
-Minimum Java target is 17 (`since-build 241`, i.e. 2024.1+).
+line ranges and selection boundaries. Minimum Java target is 17
+(`since-build 241`, i.e. 2024.1+).
 
 ## Install
 
-Three options, pick one.
+**Option 1: install from the Marketplace (recommended)**
 
-**1. Copy the directory (most robust, recommended for Remote Development)**
+`Settings | Plugins` → `Marketplace` → search for **Path Reference** → **Install**,
+then restart the IDE.
 
-Copy the whole `build/plugin/path-reference` directory into the IDE plugins
-directory, then restart the IDE:
+**Option 2: install from the zip**
 
-```bash
-cp -R build/plugin/path-reference ~/.local/share/JetBrains/PhpStorm2026.2/
-```
+Download `path-reference-plugin-<version>.zip` from
+[Releases](https://github.com/yzkos/path-reference-plugin/releases/latest), then
+`Settings | Plugins` → ⚙ → **Install Plugin from Disk...** and pick the zip;
+restart the IDE.
 
-**2. Install Plugin from Disk with the jar**
-
-`Settings | Plugins | ⚙ | Install Plugin from Disk...`, then pick:
-
-```
-build/path-reference-1.4.3.jar
-```
-
-A single jar is the least error-prone format (the plugin descriptor
-`META-INF/plugin.xml` is inside the jar).
-
-**3. Install Plugin from Disk with the zip**
-
-Pick `build/path-reference-plugin-1.4.3.zip`; its structure is:
-
-```
-path-reference/lib/path-reference-1.4.3.jar
-```
-
-> Note: the zip must keep the outer `path-reference/` directory. If you flatten
-> it to `lib/xxx.jar`, the IDE treats `lib` as the plugin root and reports
-> "Cannot load plugin descriptor from file …".
-
-> This environment is WSL + Remote Development: the plugin must be installed in
-> the **backend (WSL side)** plugins directory, i.e. the path above; restart the
-> IDE (or the backend process) on the client side afterwards.
-
-Uninstall: delete `~/.local/share/JetBrains/PhpStorm2026.2/path-reference/`, or
-use Uninstall in `Settings | Plugins`.
-
-> The plugin ID is fixed as `com.github.yzkos.pathreference` (Marketplace uses
-> the `<id>` from the uploaded `plugin.xml`; the web form does not change it).
-> If you installed a very early build (ID `com.github.pathreference`), uninstall
-> the old `Path Reference (Path:Line)` in `Settings | Plugins` first, otherwise
-> both will appear. Settings are global keys and survive reinstallation.
+Uninstall: `Settings | Plugins` → **Path Reference (Path:Line)** → **Uninstall**.
 
 ## Links
 
@@ -187,9 +146,7 @@ use Uninstall in `Settings | Plugins`.
 | Issue tracker | <https://github.com/yzkos/path-reference-plugin/issues> |
 | License | Apache-2.0 |
 
-The plugin is free, has no ads and collects no data. The release/publishing
-process is maintainer-only and documented in [PUBLISHING.md](PUBLISHING.md);
-users do not need it.
+The plugin is free, has no ads and collects no data.
 
 ## Compatibility
 
@@ -214,10 +171,7 @@ src/main/resources/messages/
 ├── PathReferenceBundle.properties         # English (default)
 └── PathReferenceBundle_zh_CN.properties   # Chinese
 src/test/java/...                  # IDE-independent unit tests
-build.sh                           # compile + test + package (no install)
-install.sh                         # build, then install into the local plugins dir
-publish.sh                         # build + upload to JetBrains Marketplace
-PUBLISHING.md                      # maintainer: publishing and release process
+build.sh                           # compile + test + package
 LICENSE                            # Apache-2.0
 ```
 
@@ -231,11 +185,7 @@ LICENSE                            # Apache-2.0
   `Copy Path with Line Numbers`; make sure the binding is not overridden by the
   system or another plugin (on Windows `Alt+C` may clash with menu mnemonics —
   pick another shortcut in the Keymap).
-- **`Shift+Alt+C` opens a chooser**: the previously installed
-  `Copy Code Reference with Line Numbers 1.1.0`
-  (`com.ccsoftware.copycodereference`) is still there. Its jar contains only
-  `plugin.xml` and no class files, so it is broken; uninstall it in
-  `Settings | Plugins`.
+
 - **The path is not relative to the project root**: check that the path style in
   `Settings | Tools | Path Reference` is `Project root`, and that the project
   root is the directory containing `.idea`.

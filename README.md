@@ -92,76 +92,36 @@
 
 ## 构建
 
-不依赖 Gradle，直接使用本机 PhpStorm 自带的 JBR 和平台 jar 编译，避免下载整套
-IntelliJ Platform SDK。
+不依赖 Gradle，使用本机 PhpStorm 自带的 JBR 和平台 jar 编译。
 
 ```bash
 ./build.sh
 ```
 
-如果自动找不到 PhpStorm：
-
-```bash
-PHPSTORM_HOME=/path/to/PhpStorm ./build.sh
-```
-
-产物：
+产物（`<version>` 取自 `plugin.xml`）：
 
 ```
-build/path-reference-1.4.3.jar                  # 插件 jar
-build/path-reference-plugin-1.4.3.zip           # 可安装的 zip
-build/plugin/path-reference/lib/*.jar           # 可直接放进 plugins 目录
+build/path-reference-<version>.jar          # 插件 jar
+build/path-reference-plugin-<version>.zip   # 可安装的 zip
 ```
 
 构建脚本会同时运行 `ReferenceFormatterTest`，覆盖格式化、行号范围和选区边界。
-版本号只在 `plugin.xml` 里维护，`build.sh` / `publish.sh` 都会自动读取。
 最低 Java 目标版本为 17（`since-build 241`，即 2024.1+）。
 
 ## 安装
 
-三种方式，任选一种。
+**方式 1：从插件中心安装（推荐）**
 
-**1. 直接放目录（最稳，Remote Development 推荐）**
+`Settings | Plugins` → `Marketplace` → 搜索 **Path Reference** → **Install**，
+重启 IDE 即可。
 
-把 `build/plugin/path-reference` 整个目录复制到 IDE 的 plugins 目录，然后重启 IDE：
+**方式 2：下载 zip 安装**
 
-```bash
-cp -R build/plugin/path-reference ~/.local/share/JetBrains/PhpStorm2026.2/
-```
+从 [Releases](https://github.com/yzkos/path-reference-plugin/releases/latest) 下载
+`path-reference-plugin-<version>.zip`，然后在
+`Settings | Plugins` → ⚙ → **Install Plugin from Disk...** 里选择该 zip，重启 IDE。
 
-**2. Install Plugin from Disk 装 jar**
-
-`Settings | Plugins | ⚙ | Install Plugin from Disk...`，选：
-
-```
-build/path-reference-1.4.3.jar
-```
-
-单个 jar 是最不容易出问题的格式（插件描述符 `META-INF/plugin.xml` 就在 jar 里）。
-
-**3. Install Plugin from Disk 装 zip**
-
-选 `build/path-reference-plugin-1.4.3.zip`，它的结构是：
-
-```
-path-reference/lib/path-reference-1.4.3.jar
-```
-
-> 注意：zip 里必须保留最外层 `path-reference/` 目录。如果压成 `lib/xxx.jar`
-> 这种「扁平」结构，IDE 会把 `lib` 当成插件根目录，然后报
-> 「无法从文件 ... 加载插件描述符」。
-
-> 当前环境是 WSL + Remote Development：插件需要装在 **后端（WSL 这一侧）** 的
-> plugins 目录，也就是上面的路径；装完在客户端里重启 IDE（或重启后端进程）后生效。
-
-卸载：删除 `~/.local/share/JetBrains/PhpStorm2026.2/path-reference/` 即可，
-或在 `Settings | Plugins` 里 Uninstall。
-
-> 插件 ID 固定为 `com.github.yzkos.pathreference`（Marketplace 以**上传包里
-> `plugin.xml` 的 `<id>`** 为准，页面表单不会改它）。如果你装过最早期的包
-> （ID 是 `com.github.pathreference`），先在 `Settings | Plugins` 里卸载旧的
-> `Path Reference (Path:Line)` 再装新包，否则会同时出现两个。设置项是全局键，
-> 卸载重装不会丢。
+卸载：`Settings | Plugins` 里找到 **Path Reference (Path:Line)** → **Uninstall**。
 
 ## 相关链接
 
@@ -172,8 +132,7 @@ path-reference/lib/path-reference-1.4.3.jar
 | Issue Tracker | <https://github.com/yzkos/path-reference-plugin/issues> |
 | License | Apache-2.0 |
 
-插件免费、无广告、不采集任何数据。上架与发版流程只涉及维护者，记在
-[PUBLISHING.md](PUBLISHING.md)，普通用户无需关心。
+插件免费、无广告、不采集任何数据。
 
 ## 兼容性
 
@@ -198,10 +157,7 @@ src/main/resources/messages/
 ├── PathReferenceBundle.properties         # 英文（默认）
 └── PathReferenceBundle_zh_CN.properties   # 中文
 src/test/java/...                  # 不依赖 IDE 的单元测试
-build.sh                           # 编译 + 测试 + 打包（不安装）
-install.sh                         # 构建后安装到本机插件目录
-publish.sh                         # 构建 + 上传到 JetBrains Marketplace
-PUBLISHING.md                      # 维护者：上架与发版流程
+build.sh                           # 编译 + 测试 + 打包
 LICENSE                            # Apache-2.0
 ```
 
@@ -214,9 +170,6 @@ LICENSE                            # Apache-2.0
 - **按 `Alt+C` 没反应**：`Settings | Keymap` 搜 `Copy Path with Line Numbers`，
   确认绑定没有被系统或其它插件覆盖（Windows 下 `Alt+C` 可能和菜单助记键冲突，
   可在 Keymap 里换一个组合键）。
-- **按 `Shift+Alt+C` 弹出选择框**：说明之前装的
-  `Copy Code Reference with Line Numbers 1.1.0`（`com.ccsoftware.copycodereference`）
-  还在。它的 jar 里只有 `plugin.xml`、没有任何 class 文件，本身是坏的；
-  建议在 `Settings | Plugins` 里卸载它。
+
 - **路径不是相对项目根目录**：确认 `Settings | Tools | 路径引用` 里的
   路径风格是 `项目根目录`，并且项目根目录就是包含 `.idea` 的目录。
