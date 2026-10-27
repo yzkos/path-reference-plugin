@@ -150,18 +150,20 @@ path-reference/lib/path-reference-1.4.1.jar
 卸载：删除 `~/.local/share/JetBrains/PhpStorm2026.2/path-reference/` 即可，
 或在 `Settings | Plugins` 里 Uninstall。
 
-> 插件 ID 现在固定为 `pathreference`（Marketplace 的 ID 字段不允许带点号）。
-> 如果你装过早期的包（ID 是 `com.github.pathreference`），先在
-> `Settings | Plugins` 里卸载旧的 `Path Reference (Path:Line)` 再装新包，否则会
-> 同时出现两个。设置项是全局键，卸载重装不会丢。
+> 插件 ID 固定为 `com.github.yzkos.pathreference`（Marketplace 以**上传包里
+> `plugin.xml` 的 `<id>`** 为准，页面表单不会改它）。如果你装过最早期的包
+> （ID 是 `com.github.pathreference`），先在 `Settings | Plugins` 里卸载旧的
+> `Path Reference (Path:Line)` 再装新包，否则会同时出现两个。设置项是全局键，
+> 卸载重装不会丢。
 
 ## 发布到 JetBrains Marketplace
 
-插件是免费的，采用 **Apache-2.0** 许可。
+插件是免费的，采用 **Apache-2.0** 许可，已发布在 JetBrains Marketplace：
+<https://plugins.jetbrains.com/plugin/35487-path-reference-path-line->
 
 | 项 | 值 |
 |---|---|
-| Plugin XML ID | `pathreference` |
+| Plugin XML ID | `com.github.yzkos.pathreference` |
 | Vendor | `yzkos`（https://github.com/yzkos/path-reference-plugin） |
 | 源码仓库 | https://github.com/yzkos/path-reference-plugin |
 | Issue Tracker | https://github.com/yzkos/path-reference-plugin/issues |
@@ -174,7 +176,7 @@ path-reference/lib/path-reference-1.4.1.jar
 | 字段 | 填什么 |
 |---|---|
 | Plugin name | `Path Reference (Path:Line)` |
-| Plugin ID | `pathreference`（Marketplace 的 ID 输入框不允许带 `.`，所以与 GitHub 命名空间不一致） |
+| Plugin ID | 由上传包里的 `<id>` 决定：`com.github.yzkos.pathreference`（不是手填的） |
 | Vendor | `yzkos` |
 | License | `Apache-2.0` |
 | Category | `Editor`（或 `Code tools`） |
@@ -222,7 +224,7 @@ path-reference/lib/path-reference-1.4.1.jar
 ```
 
 脚本做的事：`./build.sh` → `POST https://plugins.jetbrains.com/api/updates/upload`
-（`xmlId=pathreference`，token 从环境变量
+（`xmlId=com.github.yzkos.pathreference`，token 从环境变量
 `JETBRAINS_MARKETPLACE_TOKEN` 或 `~/.jetbrains-marketplace-token` 读取）。
 
 Marketplace **不接受相同版本号重复上传**，每次发版记得先改 `<version>`。

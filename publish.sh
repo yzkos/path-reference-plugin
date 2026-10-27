@@ -19,7 +19,7 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-XML_ID="pathreference"
+XML_ID="com.github.yzkos.pathreference"
 CHANNEL=""
 BUILD_ONLY=0
 TOKEN="${JETBRAINS_MARKETPLACE_TOKEN:-}"
