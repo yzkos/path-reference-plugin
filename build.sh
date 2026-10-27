@@ -7,7 +7,12 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BUILD="$ROOT/build"
-VERSION="1.4.1"
+VERSION="$(sed -n 's:.*<version>\(.*\)</version>.*:\1:p' \
+    "$ROOT/src/main/resources/META-INF/plugin.xml" | head -1)"
+if [[ -z "$VERSION" ]]; then
+    echo "error: could not read <version> from plugin.xml" >&2
+    exit 1
+fi
 JAR_NAME="path-reference-$VERSION.jar"
 
 detect_ide() {

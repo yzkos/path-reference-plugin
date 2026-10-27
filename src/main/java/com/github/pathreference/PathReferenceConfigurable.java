@@ -41,7 +41,7 @@ public class PathReferenceConfigurable implements Configurable {
         prefixField = new JBTextField(4);
         prefixField.setToolTipText(PathReferenceBundle.message("settings.prefix.tooltip"));
 
-        pathSeparatorField = new JBTextField(4);
+        pathSeparatorField = new JBTextField(8);
         pathSeparatorField.setToolTipText(PathReferenceBundle.message("settings.pathSeparator.tooltip"));
 
         rangeSeparatorField = new JBTextField(4);
@@ -124,8 +124,12 @@ public class PathReferenceConfigurable implements Configurable {
         return prefixField.getText().trim();
     }
 
+    /**
+     * Not trimmed: a separator may deliberately start or end with spaces,
+     * for example {@code " #"} to get {@code Foo.php #42}.
+     */
     private @NotNull String pathSeparator() {
-        String value = pathSeparatorField.getText().trim();
+        String value = pathSeparatorField.getText();
         return value.isEmpty() ? PathReferenceSettings.DEFAULT_PATH_SEPARATOR : value;
     }
 

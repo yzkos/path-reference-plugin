@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>com.github.yzkos.pathreference</id>
   <name>Path Reference (Path:Line)</name>
-  <version>1.4.1</version>
+  <version>1.4.2</version>
   <vendor url="https://github.com/yzkos/path-reference-plugin">yzkos</vendor>
 
   <description><![CDATA[
@@ -21,7 +21,8 @@
     (also reachable from <b>Tools | Path Reference Settings…</b>): path style
     (project root, content root, absolute), a configurable prefix such as
     <code>@</code> or <code>#</code>, the separator between the path and the
-    line number, the line-range separator, Markdown backticks, and an optional
+    line number (any text, spaces included, e.g. <code>" #"</code>), the
+    line-range separator, Markdown backticks, and an optional
     fenced code block.</p>
 
     <p>The user interface is bilingual: English on an English IDE, Chinese on a
@@ -43,7 +44,8 @@
     <p>设置位置：<b>Settings | Tools | 路径引用</b>（也可从菜单
     <b>Tools | 路径引用设置…</b> 打开），可配置：路径风格（项目根目录 / 内容根目录 /
     绝对路径）、开头符号（默认 <code>@</code>，可改成 <code>#</code> 或留空）、
-    <b>路径与行号之间的分隔符</b>（默认 <code>:</code>，可改成 <code>#</code> 等）、
+    <b>路径与行号之间的分隔符</b>（默认 <code>:</code>，可以是多个字符、也可带空格，
+    如 <code>“ #”</code> 得到 <code>File.php #42</code>，空格原样保留）、
     行号范围分隔符（默认 <code>-</code>）、Markdown 反引号，以及可选的代码块。</p>
 
     <p>界面文案跟随 IDE 语言：中文 IDE 显示中文，英文 IDE 显示英文。</p>
@@ -53,6 +55,11 @@
 
   <change-notes><![CDATA[
     <ul>
+      <li>1.4.2: The separator between the path and the line number may now have
+      multiple characters and contain spaces (for example <code>" #"</code> gives
+      <code>File.php #42</code>); spaces are kept exactly as typed. Removed usage
+      of deprecated platform APIs, so the plugin stays compatible with future IDE
+      versions.</li>
       <li>1.4.1: Paths are now relative even when the project root and the file
       belong to different file systems or reach the project through a
       symlink/alias (Remote Development, WSL); files outside the project

@@ -1,5 +1,7 @@
 # Path Reference (Path:Line)
 
+**中文** | [English](README.en.md)
+
 一个给 PhpStorm / JetBrains IDE 用的小插件：把选中的代码变成
 **项目根目录相对路径 + 行号**，直接进剪贴板。
 
@@ -23,7 +25,8 @@
 - 选中代码 → `开头符号 + 相对路径:起始行-结束行`
 - 不选中 → `开头符号 + 相对路径:光标行`
 - 开头符号可配置（默认 `@`，也可以改成 `#`、`>`，或留空）
-- 路径与行号之间的分隔符可配置（默认 `:`，也可以改成 `#`、`|`、`@` 等）
+- 路径与行号之间的分隔符可配置（默认 `:`，也可以是 `#`、`|`、`@`，
+  支持多字符和空格，如 ` #` → `@src/Foo.php #42`，空格原样保留）
 - 多光标 / 多选区 → 每行一个引用
 - 在 Project 视图里选中文件 → 只复制相对路径
 - 状态栏显示复制结果
@@ -47,6 +50,7 @@
 | 选中第 42 行的一部分 | `@src/Foo.php:42` |
 | 多光标分别在第 5、20 行 | `@src/Foo.php:5`<br>`@src/Foo.php:20` |
 | 把「路径/行号」分隔符改成 `#` | `@src/Foo.php#42`、`@src/Foo.php#42-57` |
+| 分隔符改成 ` #`（空格 + 井号） | `@src/Foo.php #42`、`@src/Foo.php #42-57` |
 
 ### 设置
 
@@ -57,7 +61,9 @@
 - **路径风格**：`项目根目录`（默认）/ `内容根目录` / `绝对路径`
 - **开头符号**：复制结果开头添加的符号，默认 `@`；留空则不加
 - **路径与行号分隔符**：文件路径和行号之间的分隔符，默认 `:`；改成 `#` 就得到
-  `@src/Foo.php#42`，改成 `|` 就是 `@src/Foo.php|42-57`
+  `@src/Foo.php#42`，改成 `|` 就是 `@src/Foo.php|42-57`。
+  支持**多字符和空格**：填入 ` #` 会得到 `@src/Foo.php #42`，
+  填入 ` <- ` 会得到 `@src/Foo.php <- 42`；前后空格都会原样保留（不会被 trim）
 - **行号范围分隔符**：起始行与结束行之间的分隔符，默认 `-`（也可以改成 `~`、`..` 等）
 - **用反引号包裹引用（Markdown）**：输出 `` `@src/Foo.php:42-57` ``，方便贴 Markdown
 - **在引用下方附加选中的代码块**：
@@ -102,12 +108,13 @@ PHPSTORM_HOME=/path/to/PhpStorm ./build.sh
 产物：
 
 ```
-build/path-reference-1.4.1.jar                  # 插件 jar
-build/path-reference-plugin-1.4.1.zip           # 可安装的 zip
+build/path-reference-1.4.2.jar                  # 插件 jar
+build/path-reference-plugin-1.4.2.zip           # 可安装的 zip
 build/plugin/path-reference/lib/*.jar           # 可直接放进 plugins 目录
 ```
 
 构建脚本会同时运行 `ReferenceFormatterTest`，覆盖格式化、行号范围和选区边界。
+版本号只在 `plugin.xml` 里维护，`build.sh` / `publish.sh` 都会自动读取。
 最低 Java 目标版本为 17（`since-build 241`，即 2024.1+）。
 
 ## 安装
@@ -127,17 +134,17 @@ cp -R build/plugin/path-reference ~/.local/share/JetBrains/PhpStorm2026.2/
 `Settings | Plugins | ⚙ | Install Plugin from Disk...`，选：
 
 ```
-build/path-reference-1.4.1.jar
+build/path-reference-1.4.2.jar
 ```
 
 单个 jar 是最不容易出问题的格式（插件描述符 `META-INF/plugin.xml` 就在 jar 里）。
 
 **3. Install Plugin from Disk 装 zip**
 
-选 `build/path-reference-plugin-1.4.1.zip`，它的结构是：
+选 `build/path-reference-plugin-1.4.2.zip`，它的结构是：
 
 ```
-path-reference/lib/path-reference-1.4.1.jar
+path-reference/lib/path-reference-1.4.2.jar
 ```
 
 > 注意：zip 里必须保留最外层 `path-reference/` 目录。如果压成 `lib/xxx.jar`
@@ -195,7 +202,7 @@ path-reference/lib/path-reference-1.4.1.jar
 
 1. 用 JetBrains Account 登录 <https://plugins.jetbrains.com/author/me>，
    同意 Marketplace Developer Agreement。
-2. 点 **Add new plugin**，上传 `build/path-reference-plugin-1.4.1.zip`，
+2. 点 **Add new plugin**，上传 `build/path-reference-plugin-1.4.2.zip`，
    填写插件页信息（描述会自动读取 `plugin.xml`，已是中英双语）。
 3. 等待自动化检查通过（会跑 Plugin Verifier，本插件为 `Compatible`），
    通过后插件才会公开。

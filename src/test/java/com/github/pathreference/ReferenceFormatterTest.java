@@ -20,6 +20,10 @@ public final class ReferenceFormatterTest {
         assertEquals("@src/App.php#5", ReferenceFormatter.format("src/App.php", 5, 5, "#", "-", "@", false));
         assertEquals("@src/App.php#5-9", ReferenceFormatter.format("src/App.php", 5, 9, "#", "-", "@", false));
         assertEquals("@src/App.php#5..9", ReferenceFormatter.format("src/App.php", 5, 9, "#", "..", "@", false));
+        // multi-character separators, spaces are part of the separator
+        assertEquals("@src/App.php #5", ReferenceFormatter.format("src/App.php", 5, 5, " #", "-", "@", false));
+        assertEquals("@src/App.php #5-9", ReferenceFormatter.format("src/App.php", 5, 9, " #", "-", "@", false));
+        assertEquals("@src/App.php <- 5", ReferenceFormatter.format("src/App.php", 5, 5, " <- ", "-", "@", false));
         assertEquals("#src/App.php", ReferenceFormatter.formatPath("src/App.php", "#", false));
         assertEquals("php", ReferenceFormatter.fenceLanguage("php"));
         assertEquals("javascript", ReferenceFormatter.fenceLanguage("js"));

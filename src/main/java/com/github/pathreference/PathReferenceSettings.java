@@ -66,8 +66,9 @@ public final class PathReferenceSettings {
     }
 
     public static void setPathSeparator(@NotNull String separator) {
+        // Store verbatim: leading/trailing spaces are part of the separator.
         PropertiesComponent.getInstance().setValue(KEY_PATH_SEPARATOR,
-                separator == null || separator.isEmpty() ? DEFAULT_PATH_SEPARATOR : separator);
+                separator == null ? DEFAULT_PATH_SEPARATOR : separator);
     }
 
     public static void setSeparator(@NotNull String separator) {
