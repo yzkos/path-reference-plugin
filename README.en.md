@@ -178,90 +178,18 @@ use Uninstall in `Settings | Plugins`.
 > the old `Path Reference (Path:Line)` in `Settings | Plugins` first, otherwise
 > both will appear. Settings are global keys and survive reinstallation.
 
-## Publishing to JetBrains Marketplace
-
-The plugin is free, licensed under **Apache-2.0**, and published on JetBrains
-Marketplace:
-<https://plugins.jetbrains.com/plugin/35487-path-reference-path-line->
+## Links
 
 | Item | Value |
 |---|---|
-| Plugin XML ID | `com.github.yzkos.pathreference` |
-| Vendor | `yzkos` (https://github.com/yzkos/path-reference-plugin) |
-| Source repository | https://github.com/yzkos/path-reference-plugin |
-| Issue tracker | https://github.com/yzkos/path-reference-plugin/issues |
+| JetBrains Marketplace | <https://plugins.jetbrains.com/plugin/35487-path-reference-path-line-> |
+| Source repository | <https://github.com/yzkos/path-reference-plugin> |
+| Issue tracker | <https://github.com/yzkos/path-reference-plugin/issues> |
 | License | Apache-2.0 |
 
-### Suggested Marketplace form values
-
-Fields on the **Add new plugin** page (leave the rest at their defaults):
-
-| Field | Value |
-|---|---|
-| Plugin name | `Path Reference (Path:Line)` |
-| Plugin ID | Determined by the `<id>` in the uploaded package: `com.github.yzkos.pathreference` (not typed by hand) |
-| Vendor | `yzkos` |
-| License | `Apache-2.0` |
-| Category | `Editor` (or `Code tools`) |
-| Tags | `php`, `path`, `line number`, `copy`, `reference`, `markdown`, `remote development` |
-| Source code URL | `https://github.com/yzkos/path-reference-plugin` |
-| Issue tracker URL | `https://github.com/yzkos/path-reference-plugin/issues` |
-| Pricing | `Free` |
-| Data collection / ads | neither (the plugin has no network access, collects nothing, has no ads) |
-| EULA / Privacy Policy | leave empty |
-| Supported IDEs | computed from `plugin.xml` (`since-build 241`, no `until-build`) |
-
-The plugin name, description, vendor, change notes and icon all come from
-`plugin.xml` and `META-INF/pluginIcon.svg`; just verify them after uploading.
-
-### One-time preparation (plugin author only)
-
-1. Sign in at <https://plugins.jetbrains.com/author/me> with your JetBrains
-   Account and accept the Marketplace Developer Agreement.
-2. Click **Add new plugin** and upload
-   `build/path-reference-plugin-1.4.2.zip`, then fill in the plugin page
-   (the description is read from `plugin.xml` and is already bilingual).
-3. Wait for the automated checks (Plugin Verifier; this plugin is
-   `Compatible`). The plugin becomes public once they pass.
-4. Generate a **permanent token** at
-   <https://plugins.jetbrains.com/author/me/tokens> for uploading later
-   versions:
-
-   ```bash
-   echo 'perm:xxxxxxxx' > ~/.jetbrains-marketplace-token
-   chmod 600 ~/.jetbrains-marketplace-token
-   ```
-
-> The very first release must be uploaded through the web UI (Marketplace
-> rule); the API/script works for all later versions.
-
-### Publishing a new version
-
-```bash
-# 1. bump <version> and <change-notes> in src/main/resources/META-INF/plugin.xml
-# 2. build + upload (Stable channel by default)
-./publish.sh
-
-# build only, no upload
-./publish.sh --build-only
-
-# publish to the beta channel
-./publish.sh --channel beta
-```
-
-What the script does: `./build.sh` → `POST https://plugins.jetbrains.com/api/updates/upload`
-(`xmlId=com.github.yzkos.pathreference`, token from `JETBRAINS_MARKETPLACE_TOKEN`
-or `~/.jetbrains-marketplace-token`).
-
-Marketplace **rejects uploading the same version twice**, so bump `<version>`
-before each release.
-
-### Signing
-
-The plugin is currently unsigned, so the IDE may show a one-time "unsigned"
-warning. To remove it, sign the zip with a self-signed certificate using
-[Marketplace ZIP Signer](https://github.com/JetBrains/marketplace-zip-signer)
-(generate a key plus `chain.crt` with `openssl`, then sign); this is optional.
+The plugin is free, has no ads and collects no data. The release/publishing
+process is maintainer-only and documented in [PUBLISHING.md](PUBLISHING.md);
+users do not need it.
 
 ## Compatibility
 
@@ -289,6 +217,7 @@ src/test/java/...                  # IDE-independent unit tests
 build.sh                           # compile + test + package (no install)
 install.sh                         # build, then install into the local plugins dir
 publish.sh                         # build + upload to JetBrains Marketplace
+PUBLISHING.md                      # maintainer: publishing and release process
 LICENSE                            # Apache-2.0
 ```
 
