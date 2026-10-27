@@ -87,9 +87,15 @@ response="$(curl "${args[@]}" -w '\nHTTP %{http_code}\n' https://plugins.jetbrai
 echo "$response"
 
 if grep -q 'HTTP 2' <<< "$response"; then
+    link="$(printf '%s' "$response" | sed -n 's/.*"link":"\([^"]*\)".*/\1/p' | head -1)"
     echo
-    echo "Uploaded. The new version appears on https://plugins.jetbrains.com/plugin/$XML_ID"
-    echo "after JetBrains' automated checks finish (usually a few minutes)."
+    echo "Uploaded $VERSION."
+    if [[ -n "$link" ]]; then
+        echo "Version page: https://plugins.jetbrains.com$link"
+    fi
+    echo "Plugin page:  https://plugins.jetbrains.com/plugin/35487-path-reference-path-line-"
+    echo "JetBrains' automated checks usually finish in a few minutes; the version"
+    echo "becomes public once they pass."
 else
     echo
     echo "Upload failed. Common causes: invalid/expired token, version $VERSION" >&2
