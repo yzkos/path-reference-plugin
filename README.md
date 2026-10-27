@@ -108,8 +108,8 @@ PHPSTORM_HOME=/path/to/PhpStorm ./build.sh
 产物：
 
 ```
-build/path-reference-1.4.2.jar                  # 插件 jar
-build/path-reference-plugin-1.4.2.zip           # 可安装的 zip
+build/path-reference-1.4.3.jar                  # 插件 jar
+build/path-reference-plugin-1.4.3.zip           # 可安装的 zip
 build/plugin/path-reference/lib/*.jar           # 可直接放进 plugins 目录
 ```
 
@@ -134,17 +134,17 @@ cp -R build/plugin/path-reference ~/.local/share/JetBrains/PhpStorm2026.2/
 `Settings | Plugins | ⚙ | Install Plugin from Disk...`，选：
 
 ```
-build/path-reference-1.4.2.jar
+build/path-reference-1.4.3.jar
 ```
 
 单个 jar 是最不容易出问题的格式（插件描述符 `META-INF/plugin.xml` 就在 jar 里）。
 
 **3. Install Plugin from Disk 装 zip**
 
-选 `build/path-reference-plugin-1.4.2.zip`，它的结构是：
+选 `build/path-reference-plugin-1.4.3.zip`，它的结构是：
 
 ```
-path-reference/lib/path-reference-1.4.2.jar
+path-reference/lib/path-reference-1.4.3.jar
 ```
 
 > 注意：zip 里必须保留最外层 `path-reference/` 目录。如果压成 `lib/xxx.jar`

@@ -18,7 +18,9 @@ public final class PathReferenceBundle extends DynamicBundle {
     private static final PathReferenceBundle INSTANCE = new PathReferenceBundle();
 
     private PathReferenceBundle() {
-        super(BUNDLE);
+        // The DynamicBundle(String) constructor is deprecated: pass the class so
+        // the platform can locate the bundle in the plugin's own classloader.
+        super(PathReferenceBundle.class, BUNDLE);
     }
 
     public static @NotNull String message(@PropertyKey(resourceBundle = BUNDLE) @NotNull String key,

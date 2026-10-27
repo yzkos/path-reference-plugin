@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>com.github.yzkos.pathreference</id>
   <name>Path Reference (Path:Line)</name>
-  <version>1.4.2</version>
+  <version>1.4.3</version>
   <vendor url="https://github.com/yzkos/path-reference-plugin">yzkos</vendor>
 
   <description><![CDATA[
@@ -55,6 +55,9 @@
 
   <change-notes><![CDATA[
     <ul>
+      <li>1.4.3: The bundle no longer uses the deprecated
+      <code>DynamicBundle(String)</code> constructor, so the 2026.3 EAP API check
+      reports no deprecated usages. No behaviour change.</li>
       <li>1.4.2: The separator between the path and the line number may now have
       multiple characters and contain spaces (for example <code>" #"</code> gives
       <code>File.php #42</code>); spaces are kept exactly as typed. Removed usage

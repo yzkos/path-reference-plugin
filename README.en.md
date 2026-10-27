@@ -119,8 +119,8 @@ PHPSTORM_HOME=/path/to/PhpStorm ./build.sh
 Artifacts:
 
 ```
-build/path-reference-1.4.2.jar                  # plugin jar
-build/path-reference-plugin-1.4.2.zip           # installable zip
+build/path-reference-1.4.3.jar                  # plugin jar
+build/path-reference-plugin-1.4.3.zip           # installable zip
 build/plugin/path-reference/lib/*.jar           # drop-in for the plugins directory
 ```
 
@@ -147,7 +147,7 @@ cp -R build/plugin/path-reference ~/.local/share/JetBrains/PhpStorm2026.2/
 `Settings | Plugins | ⚙ | Install Plugin from Disk...`, then pick:
 
 ```
-build/path-reference-1.4.2.jar
+build/path-reference-1.4.3.jar
 ```
 
 A single jar is the least error-prone format (the plugin descriptor
@@ -155,10 +155,10 @@ A single jar is the least error-prone format (the plugin descriptor
 
 **3. Install Plugin from Disk with the zip**
 
-Pick `build/path-reference-plugin-1.4.2.zip`; its structure is:
+Pick `build/path-reference-plugin-1.4.3.zip`; its structure is:
 
 ```
-path-reference/lib/path-reference-1.4.2.jar
+path-reference/lib/path-reference-1.4.3.jar
 ```
 
 > Note: the zip must keep the outer `path-reference/` directory. If you flatten
